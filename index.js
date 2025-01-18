@@ -1,8 +1,7 @@
-// CommonJS
-const getGPT4js = require("gpt4js");
+// Import the GPT4js module
+import getGPT4js from "gpt4js";
+
 const GPT4js = await getGPT4js();
-// ESM
-// import GPT4js from "gpt4js";
 
 const messages = [];
 const options = {
