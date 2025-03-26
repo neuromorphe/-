@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NeuroMorphe WEB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <button id="new-chat-btn">Новый чат ➕</button>
+            <div id="chat-list"></div>
+        </div>
+        <div class="main">
+            <header>
+                <h1>NeuroMorphe ⚡️</h1>
+                <div class="model-selector">
+                    <div id="selected-model" onclick="toggleModelList()">
+                        <span id="current-model-name">gpt-4o-mini</span>
+                        <span class="caret">▼</span>
+                    </div>
+                    <div id="model-list" style="display: none;">
+                        {% for model in models %}
+                            <div class="model-item" onclick="selectModel('{{ model.name }}')">
+                                <span class="model-name">{{ model.name }}</span>
+                                <span class="model-description">{{ model.description }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </header>
+            <div id="chat-box"></div>
+            <footer class="input-area">
+                <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileUpload()">
+                <button id="attach-btn">📎</button>
+                <input type="text" id="user-input" placeholder="Пиши сюда, бро...">
+                <button id="send-btn">Go! 🚀</button>
+            </footer>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
