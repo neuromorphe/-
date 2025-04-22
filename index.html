@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Карта на весь экран</title>
     <style>
-        /* Убираем отступы и полосы прокрутки */
         body, html {
             margin: 0;
             padding: 0;
@@ -14,18 +13,67 @@
             overflow: hidden;
         }
 
-        /* Контейнер карты растягивается на весь экран */
         .map-container {
             width: 100%;
             height: 100%;
         }
+
+        #toggleMapBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 10px 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
-    <!-- Контейнер для карты -->
     <div class="map-container">
-        <!-- Вставка кода Яндекс.Карт -->
         <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Aa4929d8d9249d0c8f1ddd779a059d270a1e821fbf73040d7b59d509b7d5c5886&amp;width=100%25&amp;height=100%25&amp;lang=ru_RU&amp;scroll=true"></script>
     </div>
+    
+    <button id="toggleMapBtn">Открыть пустую карту для проверки</button>
+
+    <script>
+        let isDefaultMap = true;
+        const mapContainer = document.querySelector('.map-container');
+        const toggleBtn = document.getElementById('toggleMapBtn');
+        
+        // Сохраняем исходные URL карт
+        const mapUrls = {
+            default: 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Aa4929d8d9249d0c8f1ddd779a059d270a1e821fbf73040d7b59d509b7d5c5886&amp;width=100%25&amp;height=100%25&amp;lang=ru_RU&amp;scroll=true',
+            empty: 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A958c35d87f43f550ee7e086d2643fb53758175ebba95ee7458e6caee3229a5be&amp;width=100%25&amp;height=100%25&amp;lang=ru_RU&amp;scroll=true'
+        };
+
+        toggleBtn.addEventListener('click', () => {
+            // Очищаем контейнер
+            mapContainer.innerHTML = '';
+            
+            // Создаем новый скрипт
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.charset = 'utf-8';
+            script.async = true;
+            
+            if (isDefaultMap) {
+                script.src = mapUrls.empty;
+                toggleBtn.textContent = 'Вернуть исходную карту';
+            } else {
+                script.src = mapUrls.default;
+                toggleBtn.textContent = 'Открыть пустую карту для проверки';
+            }
+            
+            // Добавляем скрипт в контейнер
+            mapContainer.appendChild(script);
+            
+            // Инвертируем состояние
+            isDefaultMap = !isDefaultMap;
+        });
+    </script>
 </body>
 </html>
