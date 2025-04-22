@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Карта на весь экран</title>
+    <title>Карта с переключением</title>
     <style>
         /* Убираем отступы и полосы прокрутки */
         body, html {
@@ -19,13 +19,68 @@
             width: 100%;
             height: 100%;
         }
+
+        /* Стиль кнопки */
+        #toggle-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* При наведении на кнопку */
+        #toggle-button:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
+    <!-- Кнопка переключения -->
+    <button id="toggle-button">Открыть пустую карту для проверки себя</button>
+
     <!-- Контейнер для карты -->
-    <div class="map-container">
-        <!-- Вставка кода Яндекс.Карт -->
+    <div class="map-container" id="map-container">
+        <!-- Первая карта (основная) -->
         <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Aa4929d8d9249d0c8f1ddd779a059d270a1e821fbf73040d7b59d509b7d5c5886&amp;width=100%25&amp;height=100%25&amp;lang=ru_RU&amp;scroll=true"></script>
     </div>
+
+    <script>
+        // JavaScript для переключения карт
+        const toggleButton = document.getElementById('toggle-button');
+        const mapContainer = document.getElementById('map-container');
+
+        // Флаг для отслеживания текущей карты
+        let isSecondMapVisible = false;
+
+        // HTML для второй карты
+        const secondMapScript = `<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A958c35d87f43f550ee7e086d2643fb53758175ebba95ee7458e6caee3229a5be&amp;width=100%25&amp;height=100%25&amp;lang=ru_RU&amp;scroll=true"><\/script>`;
+        
+        // HTML для первой карты
+        const firstMapScript = `<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Aa4929d8d9249d0c8f1ddd779a059d270a1e821fbf73040d7b59d509b7d5c5886&amp;width=100%25&amp;height=100%25&amp;lang=ru_RU&amp;scroll=true"><\/script>`;
+
+        // Обработчик клика по кнопке
+        toggleButton.addEventListener('click', () => {
+            if (isSecondMapVisible) {
+                // Если сейчас показана вторая карта, возвращаем первую
+                mapContainer.innerHTML = firstMapScript;
+                toggleButton.textContent = 'Открыть пустую карту для проверки себя';
+            } else {
+                // Если сейчас показана первая карта, меняем на вторую
+                mapContainer.innerHTML = secondMapScript;
+                toggleButton.textContent = 'Вернуться к основной карте';
+            }
+
+            // Переключаем флаг
+            isSecondMapVisible = !isSecondMapVisible;
+        });
+    </script>
 </body>
 </html>
